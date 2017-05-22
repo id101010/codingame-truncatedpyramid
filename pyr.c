@@ -37,25 +37,24 @@ void print_truncated_pyramid(pyr_t *p)
     }
 }
 
-void print_truncated_pyr(pyr_t *pyramid, int n)
+void calc_truncated_pyramid(pyr_t *pyramid, int n)
 {
-    int t=0;
+    // try different top layers starting with 2
+    for(int i=2; i<n; i++) {
 
-    pyramid->n_first_row = n/2; // Calculate first row
-
-    // find number of rows
-    for(int i=0; i<n; i++) {
-        t = (n/2 - 2*i); // Calculate each layer, starting with n/2
-
-        if(t <= 0 || t == 1) { // break if the layer gets negative or the top is reached
-            pyramid->n_height = i;
-            break;
+        int tmp=n;
+        // for each top layer try to subtract incrementing values until you reach 0
+        for(int j=i; j<n; j++) {
+            tmp-=j;
+            if(tmp==0) {
+                pyramid->n_first_row=j;
+                pyramid->n_first_row=(j-i+1);
+                return;
+            }
         }
-        //printf("%d: %d\n", i, t);
     }
 
-    //debugprint(pyramid);
-    print_truncated_pyramid(pyramid);
+    debugprint(pyramid);
 }
 
 int main(int argc, char **argv)
@@ -66,7 +65,8 @@ int main(int argc, char **argv)
 
     scanf("%d", &n); // Read number of characters to print
 
-    print_truncated_pyr(&pyramid,n);  // Build the truncated pyramid
+    calc_truncated_pyramid(&pyramid,n);  // Build the truncated pyramid
+    print_truncated_pyramid(&pyramid); // Print the pyramid
 
     return 0;
 }
