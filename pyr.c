@@ -34,9 +34,9 @@ void debugprint(pyr_t *p)
 void print_truncated_pyramid(pyr_t *p)
 {
     /* for each level of the pyramid */
-    for(int i=0; i<p->n_height; i++){
+    for(int i=0; i<p->n_height; i++) {
         /* print n+1 blocks starting with n=p->n_top */
-        for(int j=0; j<p->n_top+i;j++){
+        for(int j=0; j<p->n_top+i; j++) {
             printf("*");
         }
         printf("\n");
@@ -56,41 +56,20 @@ void set_pyramid(pyr_t *p, int top, int bottom)
 /* derive the heighest possible truncated pyramid from n */
 void calc_truncated_pyramid(pyr_t *p, int n)
 {
+    int tmp=0, h_tmp=0, h=0;
 
-    if(n==1){
-        set_pyramid(p,1,1);
+    for(int i=1; i<=n; i++) {
+        tmp=0;
+        for(int j=i; j<=n; j++) {
+            tmp+=j;
+            h_tmp=(j-i+1);
+            if(tmp==n && h_tmp>h) {
+                h=h_tmp;
+                set_pyramid(p,i,j);
+                break;
+            }
+        }
     }
-
-    if(n==2){
-        set_pyramid(p,1,1);
-    }
-
-    if(n==3){
-        set_pyramid(p,1,2);
-    }
-
-    if(n==4){
-        set_pyramid(p,3,3);
-    }
-
-    if(n==5){
-        set_pyramid(p,2,3);
-    }
-    
-    if(n==7){
-        set_pyramid(p,3,4);
-    }
-    
-    if(n==49){
-        set_pyramid(p,4,10);
-    }
-
-    /*
-    p->n_top=4;
-    p->n_bottom=6;
-    p->n_height=(p->n_bottom-p->n_top+1);
-    debugprint(p);
-    */
 }
 
 /* main */
@@ -103,7 +82,7 @@ int main(int argc, char **argv)
 
     scanf("%d", &n); // read number of characters to print
     //printf("%d",n);
-    
+
     calc_truncated_pyramid(&pyramid, n);  // build the truncated pyramid
     print_truncated_pyramid(&pyramid); // print the pyramid
 
