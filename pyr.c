@@ -15,12 +15,14 @@
 #include<stdbool.h>
 #include<unistd.h>
 
+//char s[] = { 0xf0, 0x9f, 0x92, 0xa9, 0};
+
 /* pyramid data object */
 typedef struct pyr_s {
     int n_top;      // number of blocks in the top layer
     int n_bottom;   // number of blocks in the bottom layer
     int n_height;   // height = n_bottom - n_top + 1
-    char character; // want to get fancy?
+    char *character; // want to get fancy?
 } pyr_t;
 
 /* print pyramid n_top, n_bottom and the height */
@@ -37,7 +39,7 @@ void print_truncated_pyramid(pyr_t *p)
     for(int i=0; i<p->n_height; i++) {
         /* print n+1 blocks starting with n=p->n_top */
         for(int j=0; j<p->n_top+i; j++) {
-            printf("*");
+            printf("%s", p->character);
         }
         printf("\n");
     }
@@ -76,8 +78,9 @@ void calc_truncated_pyramid(pyr_t *p, int n)
 int main(int argc, char **argv)
 {
     int n=0; // argument from stdin
+    char s[] = { 0xf0, 0x9f, 0x92, 0xa9, 0}; // Pile of poo
     pyr_t pyramid; // pyramid data type
-    pyramid.character = '*'; // set character to build the pyramid with
+    pyramid.character = s; // set character to build the pyramid with
     set_pyramid(&pyramid,0,0); // default values
 
     scanf("%d", &n); // read number of characters to print
